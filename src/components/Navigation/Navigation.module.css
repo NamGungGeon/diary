@@ -1,0 +1,47 @@
+.parent{
+    color: white;
+    background-color: #2d2d2d;
+    box-shadow: 3px 0px 8px 2px #2d2d2d88;
+
+
+    display: inline-block;
+    width: 200px;
+    height: 100%;
+
+    position: fixed;
+    left: 0;
+
+}
+.parent>*{
+    padding: 0.5rem;
+}
+.profile{
+    background-color: #FFFFFF11;
+    padding: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+
+.menus> *{
+    font-style: normal;
+    display: block;
+}
+.menus> .spliter{
+    cursor: default;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #FFFFFFAA;
+}
+
+.menus> .link{
+    cursor: pointer;
+    padding: 0.7rem;
+    margin: 0.3rem;
+    transition-property: background-color, color;
+    transition-duration: 0.5s;
+}
+.menus> .link:hover{
+    background-color: #e9e9e9CC;
+    color: #2d2d2d;
+}
+
