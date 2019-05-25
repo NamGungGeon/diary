@@ -12,6 +12,7 @@ import {isLogin} from "./lib/user";
 
 import React, {Component} from 'react';
 import Login from "./pages/Login";
+import {prefix} from "./lib/url";
 
 class App extends Component {
     state= {
@@ -40,11 +41,11 @@ class App extends Component {
                         width: '100%',
                         maxWidth: '1000px'
                     }}>
-                        <Route exact path={'/'} component={First}></Route>
-                        <Route exact path={'/dirs'} component={Directories}></Route>
-                        <Route exact path={'/dirs/:dirCode'} component={Diary}></Route>
-                        <Route exact path={'/dirs/:dirCode/write'} component={Write}></Route>
-                        <Route exact path={'/dirs/:dirCode/:idx'} component={ContentViewer}></Route>
+                        <Route exact path={prefix+ '/'} component={First}></Route>
+                        <Route exact path={prefix+ '/dirs'} component={Directories}></Route>
+                        <Route exact path={prefix+ '/dirs/:dirCode'} component={Diary}></Route>
+                        <Route exact path={prefix+ '/dirs/:dirCode/write'} component={Write}></Route>
+                        <Route exact path={prefix+ '/dirs/:dirCode/:idx'} component={ContentViewer}></Route>
 
                         <Route exact path={'/requests'} component={Request}></Route>
                     </div>

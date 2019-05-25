@@ -11,6 +11,7 @@ import {user} from '../lib/user';
 import ToastMessage from "../components/Msg/ToastMessage";
 import Loading from "../components/Loading/Loading";
 import Timeline from '../components/Timeline/Timeline'
+import {prefix} from "../lib/url";
 
 class Directories extends Component {
     state={
@@ -126,7 +127,7 @@ class Directories extends Component {
                             this.state.dirs.map((value)=>{
                                 if(value.type=== 'private')
                                     return (<Polaroid
-                                            data={{listener: ()=>{history.push(`/dirs/${value.code}`)}, img: (<FolderOpen fontSize={"large"}/>), content: value.title}}/>);
+                                            data={{listener: ()=>{history.push(`${prefix}/dirs/${value.code}`)}, img: (<FolderOpen fontSize={"large"}/>), content: value.title}}/>);
                             })
                         }
                     </div>
@@ -144,7 +145,7 @@ class Directories extends Component {
                             this.state.dirs.map((value)=>{
                                 if(value.type=== 'shared')
                                     return (<Polaroid
-                                        data={{listener: ()=>{history.push(`/dirs/${value.code}`)}, img: (<FolderShared fontSize={"large"}/>), content: value.title}}/>);
+                                        data={{listener: ()=>{history.push(`${prefix}/dirs/${value.code}`)}, img: (<FolderShared fontSize={"large"}/>), content: value.title}}/>);
                             })
                         }
                     </div>
