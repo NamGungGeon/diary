@@ -150,9 +150,6 @@ class Directories extends Component {
                         }
                     </div>
                     <br/>
-                    <Button variant="outlined" color="inherit" >
-                        Make new Diary
-                    </Button>
                 </div>
             </div>
         );

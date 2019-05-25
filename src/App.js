@@ -5,7 +5,7 @@ import {Route} from "react-router-dom";
 import Navigation from "./components/Navigation/Navigation";
 import Directories from "./pages/Directories";
 import Diary from "./pages/Diary";
-import ContentViewer from "./pages/ContentViewer";
+import Read from "./pages/Read";
 import Write from "./pages/Write";
 import Request from './pages/Requests'
 import {isLogin} from "./lib/user";
@@ -13,6 +13,9 @@ import {isLogin} from "./lib/user";
 import React, {Component} from 'react';
 import Login from "./pages/Login";
 import {prefix} from "./lib/url";
+import Settings from "./pages/Settings";
+import News from "./pages/News";
+import Correct from "./pages/Correct";
 
 class App extends Component {
     state= {
@@ -32,9 +35,7 @@ class App extends Component {
         return (
             <div className="App">
                 <Navigation refresher={this.refreshLoginState}/>
-                <div style={{
-                    marginLeft: '200px',
-                    padding: '2rem'
+                <div  className='content' style={{
                 }}>
                     <div style={{
                         display: 'inline-block',
@@ -45,9 +46,12 @@ class App extends Component {
                         <Route exact path={prefix+ '/dirs'} component={Directories}></Route>
                         <Route exact path={prefix+ '/dirs/:dirCode'} component={Diary}></Route>
                         <Route exact path={prefix+ '/dirs/:dirCode/write'} component={Write}></Route>
-                        <Route exact path={prefix+ '/dirs/:dirCode/:idx'} component={ContentViewer}></Route>
+                        <Route exact path={prefix+ '/dirs/:dirCode/read/:contentCode'} component={Read}></Route>
+                        <Route exact path={prefix+ '/dirs/:dirCode/read/:contentCode/correct'} component={Correct}></Route>
 
-                        <Route exact path={'/requests'} component={Request}></Route>
+                        <Route exact path={prefix+ '/requests'} component={Request}></Route>
+                        <Route exact path={prefix+ '/settings'} component={Settings}></Route>
+                        <Route exact path={prefix+ '/timeline'} component={News}></Route>
                     </div>
                 </div>
             </div>

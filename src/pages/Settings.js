@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 
-class ContentViewer extends Component {
+class Settings extends Component {
     render() {
         return (
             <div>
-                contentViewer
+                <h1>Settings</h1>
             </div>
         );
     }
 }
 
-export default ContentViewer;
+export default Settings;

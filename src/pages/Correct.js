@@ -56,7 +56,7 @@ class Write extends Component {
                     this.state.isLoading && (<Loading/>)
                 }
                 <ToastMessage msg={this.state.msg}/>
-                <h1>Describe Your Today</h1>
+                <h1>Update Diary Content</h1>
                 <TextField
                     id="standard-full-width"
                     label="Title"

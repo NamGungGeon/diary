@@ -1,8 +1,20 @@
 import React, {Component} from 'react';
 import moment from "moment";
 import styles from './Calendar.module.css';
+import PropTypes from 'prop-types';
+import {getCurrentMonth, getCurrentYear} from "../../lib/dateUtil";
 
 class Calendar extends Component {
+    static defaultProps= {
+        getContent: ()=>{},
+        current: `${getCurrentYear()-getCurrentMonth()}`
+    }
+    static propTypes= {
+        getContent: PropTypes.func,
+        current: PropTypes.string,
+    }
+
+
     days= ['Mon', 'Tus', 'Wen', 'Thu', 'Fri', 'Sat', 'Sun'];
     getStartDays= ()=>{
         return moment(`${this.props.current}-01`,'YYYY-M-DD');
@@ -38,7 +50,7 @@ class Calendar extends Component {
                         {moment(value).format("M / D")}
                     </div>
                     {
-                        this.props.getContent && this.props.getContent(value).map((v)=>{
+                        this.props.getContent(value).map((v)=>{
                             return (<div className={styles.content}>{v}</div>)
                         })
                     }

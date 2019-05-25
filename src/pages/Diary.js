@@ -14,6 +14,7 @@ import queryString from 'query-string';
 import Calendar from "../components/Calendar/Calendar";
 import {getCurrentMonth, getCurrentYear} from "../lib/dateUtil";
 import {NavLink} from "react-router-dom";
+import {prefix} from "../lib/url";
 
 
 class Diary extends Component {
@@ -80,9 +81,14 @@ class Diary extends Component {
                 </div>)
         });
     }
+    moveForWrite= ()=>{
+        const {history, match}= this.props;
+        history.push(match.url+ '/write');
+    }
 
     render() {
         const {diary}= this.state;
+        const {match, history}= this.props;
         return (
             <div>
                 {this.popup()}
@@ -94,7 +100,7 @@ class Diary extends Component {
                     {diary.title}
                 </h1>
                 <div style={{textAlign: 'left'}}>
-                    <Create fontSize={"normal"} style={{cursor: 'pointer'}}/>&nbsp;&nbsp;
+                    <Create fontSize={"normal"} style={{cursor: 'pointer'}} onClick={this.moveForWrite}/>&nbsp;&nbsp;
                     <PersonAdd fontSize={"normal"} style={{cursor: 'pointer'}}/>&nbsp;&nbsp;
                     <People fontSize={"normal"} style={{cursor: 'pointer'}}/>&nbsp;&nbsp;
                     <AccessTime fontSize={"normal"} style={{cursor: 'pointer'}}/>&nbsp;&nbsp;
@@ -127,7 +133,10 @@ class Diary extends Component {
                     {`${getCurrentYear()} / ${getCurrentMonth()}`}
                 </h3>
                 <div>
-                    <Calendar current={`${getCurrentYear()}-${getCurrentMonth()}`} name={[]} hovered={()=>{}} getContent={()=>{return [];}}/>
+                    <Calendar current={`${getCurrentYear()}-${getCurrentMonth()}`} name={[]} hovered={()=>{}}
+                              getContent={()=>{
+                                  return [(<div onClick={()=>{history.push(match.url+ `/read/agsfsafafsssss314saf3`)}}>Dummy</div>)];
+                              }}/>
                 </div>
             </div>
         );
