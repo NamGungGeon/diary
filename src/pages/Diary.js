@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import Loading from "../components/Loading/Loading";
-import ToastMessage from "../components/Msg/ToastMessage";
 import Popup from "../components/Popup/Popup";
 import Settings from '@material-ui/icons/Settings';
 import AccessTime from '@material-ui/icons/AccessTime';
@@ -13,9 +12,7 @@ import Create from '@material-ui/icons/Create';
 import queryString from 'query-string';
 import Calendar from "../components/Calendar/Calendar";
 import {getCurrentMonth, getCurrentYear} from "../lib/dateUtil";
-import {NavLink} from "react-router-dom";
-import {prefix} from "../lib/url";
-
+import {UiBundle} from "../lib/ui";
 
 class Diary extends Component {
     state= {
@@ -26,6 +23,8 @@ class Diary extends Component {
         msg: [],
         isLoading: false,
     };
+
+    uiBundle= UiBundle(this);
 
     componentDidMount() {
         const {location}= this.props;
@@ -95,7 +94,9 @@ class Diary extends Component {
                 {
                     this.state.isLoading && (<Loading/>)
                 }
-                <ToastMessage msg={this.state.msg}/>
+                {
+                    this.uiBundle.render()
+                }
                 <h1>
                     {diary.title}
                 </h1>

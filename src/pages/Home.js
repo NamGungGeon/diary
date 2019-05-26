@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Pannel from "../components/Pannel/Pannel";
+import FatalAlert from "../components/FatalAlert/FatalAlert";
 
 class Home extends Component {
     render() {

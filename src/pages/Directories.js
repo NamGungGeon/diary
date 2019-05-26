@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import Pannel from "../components/Pannel/Pannel";
 import Polaroid from "../components/Polaroid/Polaroid";
 import FolderOpen from '@material-ui/icons/FolderOpen';
 import FolderShared from '@material-ui/icons/FolderShared';
@@ -8,10 +7,10 @@ import Popup from "../components/Popup/Popup";
 import TextField from '@material-ui/core/TextField';
 import {getRndStr} from "../lib/commons";
 import {user} from '../lib/user';
-import ToastMessage from "../components/Msg/ToastMessage";
 import Loading from "../components/Loading/Loading";
-import Timeline from '../components/Timeline/Timeline'
 import {prefix} from "../lib/url";
+import {Toaster} from "../lib/ui/Toaster";
+import dayday from "../networks/dayday";
 
 class Directories extends Component {
     state={
@@ -30,6 +29,19 @@ class Directories extends Component {
         msg: [],
         isLoading: false,
     };
+
+    toaster= Toaster(this);
+
+    async componentDidMount() {
+        await dayday.getDiaryList({
+            success: (data)=>{
+                this.setState({
+                    ...this.state,
+                    dirs: data
+                });
+            },
+        });
+    }
 
     popup= ()=>{
         if(this.state.popup=== ''){
@@ -52,7 +64,7 @@ class Directories extends Component {
                             fullWidth
                             onChange={(e)=>{this.setState({...this.state, newDiaryTitle: e.target.value})}}
                             margin="normal"/>
-                        <Button variant="contained" color="primary"
+                        <Button variant="contained" color="secondary"
                                 fullWidth onClick={()=>{this.makeNewDiary(this.state.newDiaryTitle)}}>
                             submit
                         </Button>
@@ -60,26 +72,9 @@ class Directories extends Component {
         });
     }
 
-    showToastMsg= (val)=>{
-        const msg= this.state.msg;
-        msg.push(val);
-
-        this.setState({
-            ...this.state,
-            msg: msg
-        })
-        window.setTimeout(()=>{
-            const temp= this.state.msg;
-            temp.pop();
-            this.setState({
-                ...this.state,
-                msg: temp
-            })
-        }, 1500);
-    };
     makeNewDiary= (title)=>{
         if(title=== '') {
-            this.showToastMsg('you must insert title text of new diary');
+            this.toaster.cooking('you must insert title text of new diary');
             return;
         }
 
@@ -98,6 +93,7 @@ class Directories extends Component {
             isLoading: true,
         });
         window.setTimeout(()=>{
+            this.toaster.cooking('New Diary is successfully created!');
             this.setState({
                 ...this.state,
                 dirs: dirs,
@@ -117,7 +113,10 @@ class Directories extends Component {
                 {
                     this.state.isLoading && (<Loading/>)
                 }
-                <ToastMessage msg={this.state.msg}/>
+
+                {
+                    this.toaster.toasts()
+                }
                 <div>
                     <h1>
                         My Diary

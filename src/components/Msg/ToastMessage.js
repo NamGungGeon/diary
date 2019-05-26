@@ -2,11 +2,17 @@ import React, {Component} from 'react';
 import styles from './ToastMessage.module.css';
 
 class ToastMessage extends Component {
+
+    static defaultProps= {
+        msg: [],
+    }
+
     render() {
         const {msg}= this.props;
         return (
             <div className={styles.toaster}>
                 {msg && msg.map((value)=>{
+                    if(!value) return;
                     return (<div><div className={styles.toast}>{value}</div></div>);
                 })}
             </div>
