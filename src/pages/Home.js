@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
 import Pannel from "../components/Pannel/Pannel";
 
-class First extends Component {
+class Home extends Component {
     render() {
         return (
             <div>
-
-                <div>
-                    <Pannel title={'Panel'} content={'REACT IS GOD'}/>
-                </div>
+                <Pannel title={'Panel'} content={'REACT IS GOD'}/>
+                <h1>Welcome!</h1>
+                <p>
+                    Save your today with DayDay!
+                </p>
             </div>
         );
     }
 }
 
-export default First;
+export default Home;

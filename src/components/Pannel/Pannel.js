@@ -10,7 +10,7 @@ class Pannel extends Component {
         return (
             <div style={{
                 backgroundColor: '#2d2d2d',
-                boxShadow: '3px 0px 8px 2px #00000077',
+                boxShadow: '0px 0px 8px 2px #00000055',
                 color: '#e9e9e9',
                 padding: '1rem',
                 borderRadius: '4px',

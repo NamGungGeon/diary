@@ -1,6 +1,5 @@
 
 import './App.css';
-import {First} from "./pages";
 import {Route} from "react-router-dom";
 import Navigation from "./components/Navigation/Navigation";
 import Directories from "./pages/Directories";
@@ -16,6 +15,7 @@ import {prefix} from "./lib/url";
 import Settings from "./pages/Settings";
 import News from "./pages/News";
 import Correct from "./pages/Correct";
+import Home from "./pages/Home";
 
 class App extends Component {
     state= {
@@ -42,7 +42,7 @@ class App extends Component {
                         width: '100%',
                         maxWidth: '1000px'
                     }}>
-                        <Route exact path={prefix+ '/'} component={First}></Route>
+                        <Route exact path={prefix+ '/'} component={Home}></Route>
                         <Route exact path={prefix+ '/dirs'} component={Directories}></Route>
                         <Route exact path={prefix+ '/dirs/:dirCode'} component={Diary}></Route>
                         <Route exact path={prefix+ '/dirs/:dirCode/write'} component={Write}></Route>

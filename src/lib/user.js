@@ -3,7 +3,6 @@
 export const user= {
     token: 'asdfas',
     uid: 'asdfasdf',
-    defaultDiaryCode: 'asfffff',
 };
 
 
@@ -21,7 +20,6 @@ export const login= (id, pw, result)=> {
 export const logout= ()=>{
     user.token= '';
     user.uid= '';
-    user.defaultDiaryCode= '';
 }
 
 export const isLogin= ()=>{
