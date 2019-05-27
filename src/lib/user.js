@@ -2,7 +2,7 @@
 
 export const user= {
     token: 'asdfas',
-    uid: 'asdfasdf',
+    uid: 'rndrjs123',
 };
 
 

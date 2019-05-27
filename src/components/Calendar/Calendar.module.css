@@ -53,3 +53,22 @@
     padding: 0.1rem;
     font-size: 0.8rem;
 }
+
+@keyframes moving {
+    0%{
+      transform: translateX(0);
+    }
+    33%{
+        transform: translateX(-5px);
+    }
+    66%{
+        transform: translateX(5px);
+    }
+    100%{
+        transform: translateX(0);
+    }
+
+}
+.arrow:hover{
+    animation: moving 0.5s alternate;
+}

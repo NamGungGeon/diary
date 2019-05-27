@@ -1,27 +1,22 @@
 import React, {Component} from 'react';
-import Loading from "../components/Loading/Loading";
-import Popup from "../components/Popup/Popup";
 import Settings from '@material-ui/icons/Settings';
 import AccessTime from '@material-ui/icons/AccessTime';
 import People from '@material-ui/icons/People';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 import Delete from '@material-ui/icons/Delete';
-import NavigateNext from '@material-ui/icons/NavigateNext';
-import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import Create from '@material-ui/icons/Create';
 import queryString from 'query-string';
 import Calendar from "../components/Calendar/Calendar";
 import {getCurrentMonth, getCurrentYear} from "../lib/dateUtil";
 import {UiBundle} from "../lib/ui";
+import dayday from "../networks/dayday";
+import Button from "@material-ui/core/Button";
+import {user} from "../lib/user";
 
 class Diary extends Component {
     state= {
-        dirCode: '',
         diary: {},
         viewType: 'timeline',
-        popup: '',
-        msg: [],
-        isLoading: false,
     };
 
     uiBundle= UiBundle(this);
@@ -30,55 +25,52 @@ class Diary extends Component {
         const {location}= this.props;
         const query= queryString.parse(location.search);
         const {dirCode}= query;
-        this.setState({
-            ...this.state,
-            dirCode: dirCode,
-            isLoading: true
+
+        this.uiBundle.loading.start();
+        dayday.getDiaryInfo(dirCode, {
+            success: (data)=>{
+                this.uiBundle.loading.end();
+                this.setState({
+                    ...this.state,
+                    diary: data
+                })
+            },
+            fail: (e)=>{
+                this.uiBundle.loading.end();
+                this.uiBundle.exception.raise('Maybe you have not permission for this diary');
+            }
         });
-
-        window.setTimeout(()=>{
-            this.setState({
-                ...this.state,
-                diary: {
-                    title: '나의 다이어리',
-                    createDate: '2019-01-12',
-                    type: 'private',
-                    owner: '김재선',
-                    dataCnt: 123,
-                },
-                dirCode: dirCode,
-                isLoading: false,
-            })}, 1500);
     }
-
-    popup= ()=>{
-        if(this.state.popup=== ''){
-            return '';
-        }else{
-            return (<Popup contents={this.state.popup}
-                           plzClose={
-                               ()=>{this.setState({...this.state, popup: ''})}
-                           }/>);
-        }
-    };
 
     openSetting= ()=>{
-        this.setState({
-            ...this.state,
-            popup:
-                (<div>
-                    Settings
-                </div>)
-        });
+        this.uiBundle.popup.make((<div><h3>Settings</h3></div>));
     }
     openDelete= ()=>{
-        this.setState({
-            ...this.state,
-            popup:
-                (<div>
-                    Delete
-                </div>)
-        });
+        this.uiBundle.popup.make(
+            (<div>
+                <h3>Are you really want to delete this Diary?</h3>
+                <Button variant="contained" color="secondary"
+                        fullWidth onClick={async ()=>{
+                    const {history, location}= this.props;
+                    const query= queryString.parse(location.search);
+                    const {dirCode}= query;
+                    this.uiBundle.loading.start();
+
+                    await dayday.removeDiary(dirCode, {
+                        success: ()=>{
+                            this.uiBundle.loading.end();
+                            history.goBack();
+                        },
+                        fail: ()=>{
+                            this.uiBundle.loading.end();
+                            this.uiBundle.toaster.cooking('You have not permission for deleting this diary or Unknown Error occur (Retry)');
+                        }
+                    });
+                }}>
+                    Yes! Do delete!
+                </Button>
+            </div>)
+        );
     }
     moveForWrite= ()=>{
         const {history, match}= this.props;
@@ -90,10 +82,6 @@ class Diary extends Component {
         const {match, history}= this.props;
         return (
             <div>
-                {this.popup()}
-                {
-                    this.state.isLoading && (<Loading/>)
-                }
                 {
                     this.uiBundle.render()
                 }
@@ -119,25 +107,42 @@ class Diary extends Component {
                     <br/>
                     Diary type: {diary.type}
                     <br/>
-                    Data Cnt: {diary.dataCnt}
                 </div>
                 <br/>
                 <div>
                     <h2>To-do List</h2>
-                    -
+                    {
+                        this.state.diary.todos &&
+                        this.state.diary.todos.map((todo)=>{
+                            return (<p style={{cursor: 'pointer'}}><h5>
+                                    {todo.content}&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span style={{fontSize: '0.8rem', color: '#a9a9a9', fontStyle: 'italic', fontWeight: '500'}}>-{todo.creator=== user.uid? 'me': todo.creator}</span>
+                                </h5></p>);
+                        })
+                    }
                 </div>
                 <br/>
                 <br/>
-                <h3 style={{textAlign: 'center'}}>
-                    <NavigateBefore fontSize={"large"} style={{cursor: 'pointer', float: 'left'}}/>
-                    <NavigateNext fontSize={"large"} style={{cursor: 'pointer', float: 'right'}}/>
-                    {`${getCurrentYear()} / ${getCurrentMonth()}`}
-                </h3>
                 <div>
-                    <Calendar current={`${getCurrentYear()}-${getCurrentMonth()}`} name={[]} hovered={()=>{}}
-                              getContent={()=>{
-                                  return [(<div onClick={()=>{history.push(match.url+ `/read/agsfsafafsssss314saf3`)}}>Dummy</div>)];
-                              }}/>
+                    {
+                        this.state.diary.posts &&
+                        <Calendar current={`${getCurrentYear()}-${getCurrentMonth()}`} name={[]} hovered={() => {
+                        }}
+                                  getContent={(date) => {
+                                      const results = [];
+                                      this.state.diary.posts.map((post) => {
+                                          if (post.created === date)
+                                              results.push(post);
+                                      });
+
+                                      return results.map((post) => {
+                                          return (<div onClick={() => {
+                                              history.push(`${match.url}/read/${post.postId}`)
+                                          }}>{post.title}</div>)
+                                      });
+
+                                  }}/>
+                    }
                 </div>
             </div>
         );

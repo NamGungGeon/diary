@@ -2,60 +2,49 @@ import React, {Component} from 'react';
 import TextField from "@material-ui/core/TextField";
 import TextEditor from "../components/TextEditor/TextEditor";
 import Button from '@material-ui/core/Button';
-import Loading from "./Diary";
-import ToastMessage from "../components/Msg/ToastMessage";
-import {prefix} from "../lib/url";
+import {UiBundle} from "../lib/ui";
+import dayday from "../networks/dayday";
+import queryString from "query-string";
+import moment from "moment";
 
 class Write extends Component {
     state= {
-        text: '',
-        msg: [],
-        isLoading: false,
-        targetDiary: '',
+        title: '',
+        content: '',
     }
 
-    componentDidMount() {
-        this.setState({
-            ...this.state,
-            targetDiary: this.props.dirCode
-        });
-    }
+    uiBundle= UiBundle(this);
+
 
     observer= (text)=>{
         this.setState({
             ...this.state,
-            text: text,
+            content: text,
         });
     }
     save= ()=>{
-        this.props.history.goBack();
+        this.uiBundle.loading.start();
+
+        const {history, location}= this.props;
+        const query= queryString.parse(location.search);
+        const {dirCode}= query;
+        dayday.writePost(dirCode, this.state.title, this.state.content, moment().format('YYYY-MM-DD'), {
+            success:()=>{
+                this.uiBundle.loading.end();
+                history.goBack();
+            },
+            fail: (e)=>{
+                this.uiBundle.exception.raise(e);
+                this.uiBundle.loading.end();
+            },
+        });
     }
 
 
-    showToastMsg= (val)=>{
-        const msg= this.state.msg;
-        msg.push(val);
-
-        this.setState({
-            ...this.state,
-            msg: msg
-        })
-        window.setTimeout(()=>{
-            const temp= this.state.msg;
-            temp.pop();
-            this.setState({
-                ...this.state,
-                msg: temp
-            })
-        }, 1500);
-    };
     render() {
         return (
             <div>
-                {
-                    this.state.isLoading && (<Loading/>)
-                }
-                <ToastMessage msg={this.state.msg}/>
+                {this.uiBundle.render()}
                 <h1>Describe Your Today</h1>
                 <TextField
                     id="standard-full-width"
@@ -66,6 +55,12 @@ class Write extends Component {
                     margin="none"
                     InputLabelProps={{
                         shrink: true,
+                    }}
+                    onChange={(e)=>{
+                        this.setState({
+                            ...this.state,
+                            title: e.target.value,
+                        })
                     }}
                 />
                 <br/>

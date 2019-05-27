@@ -14,7 +14,6 @@ class Read extends Component {
     uiBundle= UiBundle(this);
 
     async componentDidMount() {
-        console.log(this.props);
         const {location}= this.props;
         const query= queryString.parse(location.search);
         const {dirCode, contentCode}= query;
