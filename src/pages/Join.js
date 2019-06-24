@@ -4,6 +4,8 @@ import Button from "@material-ui/core/Button";
 import {UiBundle} from "../lib/ui";
 import dayday from "../networks/dayday";
 import {login} from "../lib/user";
+import {prefix} from "../lib/url";
+import {withRouter} from "react-router-dom";
 
 class Join extends Component {
     state= {
@@ -41,8 +43,11 @@ class Join extends Component {
             this.uiBundle.loading.start();
             login(id, pw, {
                 success: ()=>{
+                    console.log('success');
+                    console.log(this.props.history);
                     this.uiBundle.loading.end();
                     this.props.refresher();
+                    this.props.history.push(`${prefix}/`);
                     //try login
                 },
                 fail: ()=>{
@@ -58,11 +63,15 @@ class Join extends Component {
         return (
             <div style={{
                 position: 'absolute',
+                zIndex: '999',
+                top: '0',
+                left: '0',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 width: '100%',
                 height: '100%',
+                backgroundColor: '#f9f9f9'
             }}>
 
                <div style={{
@@ -110,7 +119,7 @@ class Join extends Component {
                        label="Password Recheck"
                        margin="dense"
                        variant="outlined"
-                       helperText="rewrite above pw. just recheck process"
+                       helperText="Rewrite above pw. just recheck process"
                        fullWidth
                        onChange={(e)=>{
                            this.setState({
@@ -159,4 +168,4 @@ class Join extends Component {
     }
 }
 
-export default Join;
+export default withRouter(Join);

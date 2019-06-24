@@ -6,6 +6,7 @@ import {UiBundle} from "../lib/ui";
 import {prefix} from "../lib/url";
 import {NavLink} from "react-router-dom";
 import {login, user} from "../lib/user";
+import Link from "@material-ui/core/Link";
 
 class Login extends Component {
     state= {
@@ -68,7 +69,6 @@ class Login extends Component {
                     maxHeight: '600px'
                 }}>
                     <h1>
-                        Welcome to
                         <p style={{fontSize: '4rem', fontWeight: '800', margin: '0'}}>DayDay</p>
                     </h1>
                     <br/><br/>
@@ -95,16 +95,18 @@ class Login extends Component {
                         <Button variant="contained" color="primary" onClick={()=>{this.login()}} style={{float: 'left', width: '45%'}}>
                             Login
                         </Button>
-                        <Button variant="outlined" color="primary"  style={{float: 'right', width: '45%'}}
-                                onClick={()=>{
-                                    console.log('clicked');
-                                    //temp info
-                                    user.uid= 'temp';
-                                    user.token= 'temp';
-                                    this.props.refresher();
-                                }}>
-                            Join
-                        </Button>
+                        <NavLink to={`${prefix}/join`}>
+                            <Button variant="outlined" color="primary"  style={{float: 'right', width: '45%'}}
+                                    onClick={()=>{
+                                        console.log('clicked');
+                                        //temp info
+                                        user.uid= 'temp';
+                                        user.token= 'temp';
+                                        this.props.refresher();
+                                    }}>
+                                Join
+                            </Button>
+                        </NavLink>
                         <br/><br/><br/>
                         <Button variant="contained" color="secondary" fullWidth
                             onClick={()=>{this.uiBundle.toaster.cooking('Not made yet. Good Luck :)')}}>

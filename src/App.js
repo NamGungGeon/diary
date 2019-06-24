@@ -7,7 +7,7 @@ import Diary from "./pages/Diary";
 import Read from "./pages/Read";
 import Write from "./pages/Write";
 import Request from './pages/Requests'
-import {isLogin, joinState} from "./lib/user";
+import {isLogin, joinState, user, userObserver} from "./lib/user";
 
 import React, {Component} from 'react';
 import Login from "./pages/Login";
@@ -22,7 +22,15 @@ import Statistics from "./pages/Statistics";
 class App extends Component {
     state= {
         loginState: isLogin()
+    };
+    componentDidMount() {
+        userObserver.action= (type)=>{
+            this.setState({
+                loginState: isLogin(),
+            })
+        }
     }
+
     refreshLoginState= ()=>{
         this.setState({
             ...this.state,
@@ -31,9 +39,21 @@ class App extends Component {
     }
 
     render() {
-        if(!isLogin()){
-            if(joinState()) return (<div><Join refresher={this.refreshLoginState}/></div>);
-            else return (<div><Login refresher={this.refreshLoginState}/></div>);
+        if(!this.state.loginState){
+            if(joinState()){
+                return (
+                    <div>
+                        <Route path={prefix+ '/'} render={()=>(<Login refresher={this.refreshLoginState}/>)}></Route>
+                        <Route exact path={prefix+ '/join'} render={()=>(<Join refresher={this.refreshLoginState}/>)}></Route>
+                    </div>
+                );
+            }else{
+                user.token= '';
+                user.uid= '';
+                return (<Login refresher={this.refreshLoginState}/>);
+            }
+            // if(joinState()) return (<div><Join refresher={this.refreshLoginState}/></div>);
+            // else return (<div><Login refresher={this.refreshLoginState}/></div>);
         }
         return (
             <div className="App">
