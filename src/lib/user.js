@@ -1,31 +1,45 @@
+import dayday from "../networks/dayday";
+import Cookies from 'universal-cookie';
 
+
+const cookies= new Cookies();
 
 export const user= {
-    token: 'asdfas',
-    uid: 'rndrjs123',
+    token: cookies.get('token')? cookies.get('token'): '',
+    uid: cookies.get('uid')? cookies.get('uid'): '',
 };
 
 
-// let token= '';
-// let uid= 'asdfasfafafsdfff';
-
 export const login= (id, pw, result)=> {
-    window.setTimeout(()=>{
-        user.token= '14241512555';
-        user.uid= 'sdasg234asgasss';
-        if(result.success) result.success();
-    }, 2000);
+    dayday.getToken(id, pw, {
+        success: (token)=>{
+            cookies.set('token', token);
+            cookies.set('uid', id);
+            result.success(token);
+        },
+        fail: (e)=>{
+            result.fail(e);
+        }
+    });
 };
 
 export const logout= ()=>{
     user.token= '';
     user.uid= '';
+    cookies.set('token', '');
+    cookies.set('uid', '');
 }
 
 export const isLogin= ()=>{
-    if(user.token==='' || user.uid=== '')
-        return false;
+    if(user.token==='' && user.uid=== ''
+        || user.token === 'temp' && user.uid === 'temp') {
+            return false;
+    }
 
     return true;
 };
+
+export const joinState= ()=>{
+    return user.token=== 'temp' && user.uid=== 'temp';
+}
 

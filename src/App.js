@@ -7,7 +7,7 @@ import Diary from "./pages/Diary";
 import Read from "./pages/Read";
 import Write from "./pages/Write";
 import Request from './pages/Requests'
-import {isLogin} from "./lib/user";
+import {isLogin, joinState} from "./lib/user";
 
 import React, {Component} from 'react';
 import Login from "./pages/Login";
@@ -16,6 +16,8 @@ import Settings from "./pages/Settings";
 import News from "./pages/News";
 import Correct from "./pages/Correct";
 import Home from "./pages/Home";
+import Join from "./pages/Join";
+import Statistics from "./pages/Statistics";
 
 class App extends Component {
     state= {
@@ -30,7 +32,8 @@ class App extends Component {
 
     render() {
         if(!isLogin()){
-            return (<div><Login refresher={this.refreshLoginState}/></div>);
+            if(joinState()) return (<div><Join refresher={this.refreshLoginState}/></div>);
+            else return (<div><Login refresher={this.refreshLoginState}/></div>);
         }
         return (
             <div className="App">
@@ -48,10 +51,10 @@ class App extends Component {
                         <Route exact path={prefix+ '/dirs/:dirCode/write'} component={Write}></Route>
                         <Route exact path={prefix+ '/dirs/:dirCode/read/:contentCode'} component={Read}></Route>
                         <Route exact path={prefix+ '/dirs/:dirCode/read/:contentCode/correct'} component={Correct}></Route>
-
                         <Route exact path={prefix+ '/requests'} component={Request}></Route>
                         <Route exact path={prefix+ '/settings'} component={Settings}></Route>
                         <Route exact path={prefix+ '/timeline'} component={News}></Route>
+                        <Route exact path={prefix+ '/statistics'} component={Statistics}></Route>
                     </div>
                 </div>
             </div>

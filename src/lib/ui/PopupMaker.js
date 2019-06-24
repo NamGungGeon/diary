@@ -1,23 +1,25 @@
 
 import React from 'react';
 import Popup from "../../components/Popup/Popup";
+import {getRndStr} from "../commons";
 
 export const PopupMaker= (component)=>{
+    const prefix= getRndStr();
     const ret= {
         make: (content)=>{
             component.setState({
                 ...component.state,
-                popupContent: content? content: ''
+                ['popupContent'+ prefix]: content? content: ''
             });
         },
         destroy: ()=>{
             component.setState({
                 ...component.state,
-                popupContent: ''
+                ['popupContent'+ prefix]: ''
             });
         },
         render: ()=>{
-            return component.state.popupContent? (<Popup contents={component.state.popupContent} plzClose={()=>{ret.destroy();}}/>): '';
+            return component.state['popupContent'+ prefix]? (<Popup contents={component.state['popupContent'+ prefix]} plzClose={()=>{ret.destroy();}}/>): '';
         },
     }
     return ret;

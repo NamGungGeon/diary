@@ -61,12 +61,12 @@ class Directories extends Component {
                         <TextField
                             id="standard-name"
                             label="Diary Title"
+                            margin="normal"
                             fullWidth
-                            onChange={(e)=>{this.setState({...this.state, newDiaryTitle: e.target.value})}}
-                            margin="normal"/>
+                            onChange={(e)=>{this.setState({...this.state, newDiaryTitle: e.target.value})}}/>
                         <Button variant="contained" color="secondary"
                                 fullWidth onClick={()=>{this.makeNewDiary(this.state.newDiaryTitle)}}>
-                            submit
+                            create
                         </Button>
                     </div>)
         });
@@ -113,7 +113,6 @@ class Directories extends Component {
                 {
                     this.state.isLoading && (<Loading/>)
                 }
-
                 {
                     this.toaster.toasts()
                 }
