@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import Root from "./Root";
+import 'react-app-polyfill/ie11';
+import 'react-app-polyfill/stable';
 
 ReactDOM.render(<Root />, document.getElementById('root'));
 
